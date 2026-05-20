@@ -1,7 +1,7 @@
 {
   "name": "kinbot-plugin-teamspeak",
   "version": "0.2.0",
-  "description": "Bridge KinBot with a TeamSpeak server via the local ts-bot WebSocket API. Adds a channel adapter (chat + TTS) and tools to control the bot.",
+  "description": "Bridge KinBot with a TeamSpeak server via the local ts-bot WebSocket API. Channel adapter (chat + TTS) + tools (move, speak, send chat, status).",
   "author": "MarlBurroW",
   "license": "MIT",
   "repository": {
@@ -25,8 +25,8 @@
     "kinbot",
     "teamspeak",
     "voice",
-    "tts",
-    "channel"
+    "channel",
+    "tts"
   ],
   "peerDependencies": {
     "@kinbot-developer/sdk": "^0.2.0"
