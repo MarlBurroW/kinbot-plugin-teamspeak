@@ -462,6 +462,37 @@ export default function (ctx: PluginContext) {
 
     formatInboundContext,
 
+    /**
+     * Expose the rooms on the bound TeamSpeak server as endpoints — so
+     * a Kin can be told "talk in the Lobby" and resolve which chat_id
+     * to send to without having to scrape a previous message.
+     *
+     * Hits the live `get_status` command (round-trip on the local
+     * WebSocket, typically <50ms). Channel ids on TeamSpeak are
+     * numeric; we stringify so they fit the SDK's opaque-string
+     * contract. The parent_id metadata helps the host UI render the
+     * hierarchy in a future settings view.
+     */
+    async listEndpoints(
+      _channelId: string,
+      _channelConfig: Record<string, unknown>,
+    ) {
+      const c = ensureClient()
+      const resp = await c.sendCommand<TsBotServerState>(
+        { type: 'get_status' },
+        { expectIntermediate: true },
+      )
+      if (!resp.success || !resp.data) {
+        throw new Error(`ts-bot get_status failed: ${resp.message ?? 'unknown error'}`)
+      }
+      return resp.data.channels.map((ch) => ({
+        id: String(ch.id),
+        displayName: ch.name,
+        type: 'room' as const,
+        metadata: { parentId: ch.parent_id },
+      }))
+    },
+
     async onIdentityChange(
       _channelId: string,
       _channelConfig: Record<string, unknown>,
