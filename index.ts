@@ -871,6 +871,7 @@ export default function (ctx: PluginContext) {
 
     poke_client: {
       availability: ['main'] as const,
+      label: 'Poke client',
       create: () =>
         tool({
           description:
@@ -891,6 +892,7 @@ export default function (ctx: PluginContext) {
 
     kick_client: {
       availability: ['main'] as const,
+      label: 'Kick client',
       create: () =>
         tool({
           description:
@@ -916,6 +918,7 @@ export default function (ctx: PluginContext) {
 
     move_client: {
       availability: ['main'] as const,
+      label: 'Move client',
       create: () =>
         tool({
           description:
@@ -959,6 +962,7 @@ export default function (ctx: PluginContext) {
 
     get_server_info: {
       availability: ['main', 'sub-kin'] as const,
+      label: 'Get server info',
       create: () =>
         tool({
           description: 'Get TS3 virtual server metadata (name, welcome message, version, max clients, etc.).',
@@ -976,6 +980,7 @@ export default function (ctx: PluginContext) {
 
     create_channel: {
       availability: ['main'] as const,
+      label: 'Create channel',
       create: () =>
         tool({
           description:
@@ -1005,6 +1010,7 @@ export default function (ctx: PluginContext) {
 
     set_channel_description: {
       availability: ['main'] as const,
+      label: 'Set channel description',
       create: () =>
         tool({
           description: "Update an existing channel's description (long text shown in TS3 channel info).",
@@ -1025,6 +1031,7 @@ export default function (ctx: PluginContext) {
 
     delete_channel: {
       availability: ['main'] as const,
+      label: 'Delete channel',
       create: () =>
         tool({
           description:
@@ -1048,6 +1055,7 @@ export default function (ctx: PluginContext) {
 
     activate_listener: {
       availability: ['main'] as const,
+      label: 'Activate audio listener',
       create: () =>
         tool({
           description: 'Start transcribing voice from a specific TS3 client (Whisper STT). Audio from that client will start producing transcription events.',
@@ -1064,6 +1072,7 @@ export default function (ctx: PluginContext) {
 
     deactivate_listener: {
       availability: ['main'] as const,
+      label: 'Deactivate audio listener',
       create: () =>
         tool({
           description: 'Stop transcribing voice from a specific TS3 client. Transcription events for that client will cease.',
@@ -1080,6 +1089,7 @@ export default function (ctx: PluginContext) {
 
     set_language: {
       availability: ['main'] as const,
+      label: 'Set TTS language',
       create: () =>
         tool({
           description:
@@ -1106,6 +1116,7 @@ export default function (ctx: PluginContext) {
 
     set_volume: {
       availability: ['main'] as const,
+      label: 'Set TTS volume',
       create: () =>
         tool({
           description:
@@ -1131,6 +1142,7 @@ export default function (ctx: PluginContext) {
 
     get_volume: {
       availability: ['main', 'sub-kin'] as const,
+      label: 'Get TTS volume',
       create: () =>
         tool({
           description: 'Get the current TTS playback volume (0-200, where 100 = normal).',
@@ -1148,6 +1160,7 @@ export default function (ctx: PluginContext) {
 
     set_voice: {
       availability: ['main'] as const,
+      label: 'Set TTS voice',
       create: () =>
         tool({
           description:
@@ -1173,6 +1186,7 @@ export default function (ctx: PluginContext) {
 
     get_voice: {
       availability: ['main', 'sub-kin'] as const,
+      label: 'Get TTS voice',
       create: () =>
         tool({
           description: 'Get the current default TTS voice used by ts-bot.',
@@ -1190,6 +1204,7 @@ export default function (ctx: PluginContext) {
 
     set_speed: {
       availability: ['main'] as const,
+      label: 'Set TTS speed',
       create: () =>
         tool({
           description:
@@ -1214,6 +1229,7 @@ export default function (ctx: PluginContext) {
 
     get_speed: {
       availability: ['main', 'sub-kin'] as const,
+      label: 'Get TTS speed',
       create: () =>
         tool({
           description: 'Get the current TTS speech speed (0.25-4.0).',
@@ -1231,6 +1247,7 @@ export default function (ctx: PluginContext) {
 
     set_timeout: {
       availability: ['main'] as const,
+      label: 'Set bot idle timeout',
       create: () =>
         tool({
           description:
@@ -1256,6 +1273,7 @@ export default function (ctx: PluginContext) {
 
     get_timeout: {
       availability: ['main', 'sub-kin'] as const,
+      label: 'Get bot idle timeout',
       create: () =>
         tool({
           description: 'Get the current STT silence-detection timeout in milliseconds.',
@@ -1273,6 +1291,7 @@ export default function (ctx: PluginContext) {
 
     get_history: {
       availability: ['main', 'sub-kin'] as const,
+      label: 'Get listener history',
       create: () =>
         tool({
           description:
