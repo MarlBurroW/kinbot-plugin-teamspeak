@@ -739,6 +739,7 @@ export default function (ctx: PluginContext) {
   const tools = {
     get_status: {
       availability: ['main', 'sub-kin'] as const,
+      label: 'Get server status',
       create: () =>
         tool({
           description:
@@ -777,6 +778,7 @@ export default function (ctx: PluginContext) {
 
     speak: {
       availability: ['main'] as const,
+      label: 'Speak (TTS)',
       create: () =>
         tool({
           description:
@@ -798,6 +800,7 @@ export default function (ctx: PluginContext) {
 
     send_chat: {
       availability: ['main'] as const,
+      label: 'Send chat message',
       create: () =>
         tool({
           description:
@@ -829,6 +832,7 @@ export default function (ctx: PluginContext) {
 
     move_channel: {
       availability: ['main'] as const,
+      label: 'Move bot to channel',
       create: () =>
         tool({
           description: 'Move the TeamSpeak bot to a different channel. Use get_status to discover channel IDs.',
@@ -850,6 +854,7 @@ export default function (ctx: PluginContext) {
 
     stop_speaking: {
       availability: ['main'] as const,
+      label: 'Stop speaking',
       create: () =>
         tool({
           description: 'Immediately stop any ongoing TTS playback in the TeamSpeak channel. No-op if nothing is playing.',
@@ -935,6 +940,7 @@ export default function (ctx: PluginContext) {
 
     set_nickname: {
       availability: ['main'] as const,
+      label: 'Set bot nickname',
       create: () =>
         tool({
           description: "Change the bot's own display nickname on TeamSpeak. The new name is visible to everyone immediately.",
