@@ -75,6 +75,10 @@ describe('teamspeak plugin export shape', () => {
         'get_timeout',
         // History
         'get_history',
+        // Per-speaker WAV recording (ts-bot >= 5a5f2d5)
+        'start_recording',
+        'stop_recording',
+        'get_recording_status',
       ].sort(),
     )
   })

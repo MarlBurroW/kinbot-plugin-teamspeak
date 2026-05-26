@@ -1315,6 +1315,76 @@ export default function (ctx: PluginContext) {
           },
         }),
     },
+
+    // ─── Per-speaker WAV recording ────────────────────────────────────────
+    //
+    // ts-bot taps the raw 48 kHz mono PCM from the Opus decoder (before the
+    // Whisper resample) and writes a per-speaker WAV file keyed on stable
+    // TS3 UID. Files grow across sessions, with a 1 s silence pad injected
+    // between bursts > 500 ms apart so playback stays intelligible. Output
+    // directory is configured on the ts-bot side via the RECORDINGS_DIR
+    // env var (default: `recordings/`). All three commands are idempotent.
+
+    start_recording: {
+      availability: ['main'] as const,
+      label: 'Start recording',
+      create: () =>
+        tool({
+          description:
+            "Start per-speaker WAV recording on ts-bot. Each TS3 user gets their own WAV file (keyed by stable UID) in the ts-bot RECORDINGS_DIR. Idempotent — if recording is already active, returns success with 'Recording already active'. Returns the output directory path on the ts-bot host.",
+          inputSchema: z.object({}),
+          execute: async () => {
+            const c = ensureClient()
+            const resp = await c.sendCommand({ type: 'start_recording' }, { expectIntermediate: false })
+            if (!resp.success) return { error: resp.message ?? 'start_recording failed' }
+            return { success: true, message: resp.message ?? null }
+          },
+        }),
+    },
+
+    stop_recording: {
+      availability: ['main'] as const,
+      label: 'Stop recording',
+      create: () =>
+        tool({
+          description:
+            'Stop per-speaker WAV recording and finalize every open file. Idempotent — safe to call when not recording (returns stopped=false, empty files). Returns the list of finalized files with their UID, speaker name, path on the ts-bot host, and duration in milliseconds.',
+          inputSchema: z.object({}),
+          execute: async () => {
+            const c = ensureClient()
+            const resp = await c.sendCommand({ type: 'stop_recording' }, { expectIntermediate: false })
+            if (!resp.success) return { error: resp.message ?? 'stop_recording failed' }
+            // ts-bot puts the structured result (JSON-stringified) into the
+            // `message` field rather than `data`. Parse it so the model
+            // sees `{ stopped, files: [...] }` directly; fall back to the
+            // raw string if the payload shape ever changes.
+            let parsed: unknown = null
+            if (typeof resp.message === 'string') {
+              try { parsed = JSON.parse(resp.message) } catch { /* keep raw */ }
+            }
+            return parsed && typeof parsed === 'object'
+              ? { success: true, ...(parsed as Record<string, unknown>) }
+              : { success: true, message: resp.message ?? null }
+          },
+        }),
+    },
+
+    get_recording_status: {
+      availability: ['main', 'sub-kin'] as const,
+      label: 'Get recording status',
+      create: () =>
+        tool({
+          description:
+            "Query the recorder state on ts-bot. Returns `active` (whether a session is open), `output_dir`, `session_duration_ms` (null if inactive), and `files` — the list of writers currently open in this session, each with `uid`, `speaker_name`, `path`, `duration_ms`, and `last_activity_ms_ago`. Note: this only lists writers from the CURRENT session, not historical recordings on disk.",
+          inputSchema: z.object({}),
+          execute: async () => {
+            const c = ensureClient()
+            const resp = await c.sendCommand({ type: 'get_recording_status' }, { expectIntermediate: false })
+            if (!resp.success) return { error: resp.message ?? 'get_recording_status failed' }
+            return { success: true, data: resp.data ?? null }
+          },
+        }),
+    },
   }
 
   return {

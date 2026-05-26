@@ -10,7 +10,7 @@ It contributes:
   - Private message → chat only (no TTS).
   - Public channel → TTS **and** chat copy (TTS is sometimes glitchy, scrollback is useful).
   - Reply longer than `ttsMaxChars` → short TTS notice + full text in chat.
-- **25 tools** (auto-namespaced as `plugin_teamspeak_*` by KinBot) covering
+- **28 tools** (auto-namespaced as `plugin_teamspeak_*` by KinBot) covering
   the full ts-bot WebSocket admin surface:
 
   Bot voice & chat:
@@ -47,6 +47,11 @@ It contributes:
 
   History:
   - `get_history` — recent conversation entries (chat + transcriptions) tracked by ts-bot. Optional `count` (default 20, max 50).
+
+  Per-speaker WAV recording (ts-bot ≥ 5a5f2d5):
+  - `start_recording` — start tapping the raw 48 kHz PCM from the Opus decoder into per-speaker WAV files (keyed by stable TS3 UID), idempotent.
+  - `stop_recording` — finalize every open WAV; returns `{ stopped, files: [{ uid, speaker_name, path, duration_ms }] }`.
+  - `get_recording_status` — current session info (`active`, `output_dir`, `session_duration_ms`, list of writers with per-file duration + last activity). Note: only lists writers from the current session, not historical files on disk.
 
 ## Requirements
 
